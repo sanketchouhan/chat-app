@@ -1,0 +1,26 @@
+<div class="box col s10 offset-s1">
+  <div class="row">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="input-field col s12">
+        <i class="material-icons prefix">perm_identity</i>
+        <input type="text" formControlName="username" id="username" autocomplete="off" required maxlength="20">
+        <label for="username">Username</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="material-icons prefix">lock_open</i>
+        <input type="password" formControlName="password" id="password" required maxlength="20">
+        <label for="password">Password</label>
+      </div>
+      <div class="input-field col s12">
+        <i class="material-icons prefix">lock_outline</i>
+        <input type="password" formControlName="confirmpassword" id="confirmpassword" required maxlength="20">
+        <label for="confirmpassword">Confirm Password</label>
+      </div>
+      <button type="submit" [disabled]="!registerForm.valid" class="btn waves-effect waves-light">Register <i class="material-icons"></i></button>
+    </form>
+    <br>
+    <a (click)="routeTo()">Already have an account? Sign in</a>
+  </div>
+</div>
+
+<!-- [disabled]="!registerForm.valid" -->

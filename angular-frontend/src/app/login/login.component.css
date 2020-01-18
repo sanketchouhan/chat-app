@@ -1,0 +1,55 @@
+
+.box{
+    background: #a96ff02f;
+    padding: 30px 20px;
+    /* margin: 0 auto; */
+    border-radius: 10px;
+    text-align: center;
+    /* display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column; */
+}
+
+.row{
+    margin: 0;
+}
+.input-field{
+    padding: 0;
+}
+
+input{
+    color: #fff;
+}
+.input-field label {
+    color: #fff;
+}
+.input-field input:focus + label {
+    color: #fff;
+}
+.input-field input:focus {
+    border-bottom: 1px solid #fff;
+    /* box-shadow: 0 1px 0 0 #fff; */
+}
+.input-field .prefix.active {
+    color: #fff;
+}
+
+.btn{
+    width: 90%;
+    height: 40px;
+    text-align: center;
+    /* border: none; */
+    /* margin: 5px 0; */
+    border-radius: 10px;
+    color: #fff;
+    font-size: 18px;
+    background: #1c0330;
+
+}
+
+a{
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}

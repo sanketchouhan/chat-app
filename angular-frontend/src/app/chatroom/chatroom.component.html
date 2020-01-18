@@ -1,0 +1,58 @@
+<div class="chatRoom container-fluid">
+  <div class="row">
+    <!-- <div class="col-lg-1"></div> -->
+    <div class="col s12 l10 offset-l1">
+      <div class="chatContent">
+        <div class="chatHeader">
+          <a routerLink="/contacts">
+            <i class="material-icons center chevron">chevron_left</i></a>
+          <div class="chatUserProfile waves-effect waves-light">
+            <img src={{picUrl}} alt="">
+            <span class="chatHead">{{chatUser}}</span>
+            <!-- <i class="material-icons center right">more_vert</i> -->
+          </div>
+        </div>
+
+        <div class="chatContainer">
+          <div class="chatBox">
+            <div class="input-field">
+              <textarea rows="1" [(ngModel)]="textMsg" class="materialize-textarea"
+                placeholder="Type your message here"></textarea>
+            </div>
+            <!--(keyup)="do_resize(this.textMsg)" -->
+            <button class="btn" (click)="onSubmit()"><i class="material-icons center">send</i></button>
+          </div>
+          <div class="messageBox">
+            <div class="box" *ngFor="let message of messages">
+              <div class="usermsg" *ngIf="message.user=='user1'; else elseBlock">
+                {{message.msg}}
+                <div class="sending" *ngIf="sending">
+                  <div class="preloader-wrapper small active">
+                    <div class="spinner-layer spinner-blue-only">
+                      <div class="circle-clipper left">
+                        <div class="circle"></div>
+                      </div>
+                      <div class="gap-patch">
+                        <div class="circle"></div>
+                      </div>
+                      <div class="circle-clipper right">
+                        <div class="circle"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <ng-template #elseBlock>
+                <div class="user2msg">
+                  {{message.msg}}
+                </div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-lg-1"></div> -->
+  </div>
+</div>
