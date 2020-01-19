@@ -28,75 +28,33 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
   }
+  status: string;
 
-  user: user = {
+  user = {
     username: "",
     password: ""
-  }
+  };
 
 
   login() {
-    Swal.fire({
-      title: 'Logging in...',
-      showConfirmButton: false,
-      width: '250px',
-      allowOutsideClick: false,
-      onBeforeOpen: () => {
-        Swal.showLoading()
-      }
-    });
     this._userService.loginUser(this.user).subscribe(
-      (data) => {
+      (data: any) => {
         //when login successful
-        this._userService.setUser(this.user);
-        localStorage.setItem("isLoggedIn", JSON.stringify(this.user));
-        if ($(window).outerWidth() < 576) {
+        if (data.username) {
+          this._userService.setUser(data);
+          localStorage.setItem("LoggedInUser", JSON.stringify(data));
           this._route.navigate(["contacts"]);
-        }else{
-          this._route.navigate(["contacts/chatroom"]);
+        } else {
+          this.status=data.status;
         }
       },
       err => {
-        setTimeout(() => {
-          this._userService.setUser(this.user);
-          localStorage.setItem("isLoggedIn", JSON.stringify(this.user));
-          if ($(window).outerWidth() < 576) {
-            this._route.navigate(["contacts"]);
-          }else{
-            this._route.navigate(["contacts/chatroom"]);
-          }
-          Swal.close();
-        }, 3000);
-
-
+        console.log(err);
       }
     )
     // Make sure the client is loaded and sign-in is complete before calling this method.
-
+    // this._route.navigate(["contacts"]);
   }
-
-  // loadClient() {
-  //   gapi.client.setApiKey("YOUR_API_KEY");
-  //   return gapi.client.load("https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest")
-  //     .then(function () { console.log("GAPI client loaded for API"); },
-  //       function (err) { console.error("Error loading GAPI client for API", err); });
-  // }
-
-  // execute(channel) {
-  //   console.log(channel);
-  //   this._userService.getPlayListForChannel(channel).subscribe(data=>console.log(data));
-  // return gapi.client.youtube.search.list({
-  //   "part": "snippet",
-  //   "maxResults": 25,
-  //   "q": "surfing"
-  // })
-  //   .then(function (response) {
-  //     // Handle the results here (response.result has the parsed body).
-  //     console.log("Response", response);
-  //   },
-  //     function (err) { console.error("Execute error", err); });
-  // }
-
 
   routeTo() {
     this._route.navigate(["home/register"]);

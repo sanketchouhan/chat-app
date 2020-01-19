@@ -1,26 +1,14 @@
-<div class="box col s10 offset-s1">
-  <!-- <form > -->
-  <div class="row">
-    <div class="input-field col s12">
-        <i class="material-icons prefix">perm_identity</i>
-      <input type="text" id="username" [(ngModel)]="user.username" autocomplete="off">
-      <label for="username">Username</label>
-    </div>
-    <div class="input-field col s12">
-        <i class="material-icons prefix">lock_open</i>
-      <input type="password" id="password" [(ngModel)]="user.password">
-      <label for="password">Password</label>
-    </div>
+<div class="box">
 
-
-    <!-- <input type="text" name="username" [(ngModel)]="user.username" placeholder="Username" id="username" autocomplete="off">
-      <input type="password" name="password" [(ngModel)]="user.password" placeholder="Password" id="password"> -->
-    <!-- <button type="submit" (click)="login()" class="btn">Login <i class="fas fa-sign-in-alt"></i></button> -->
-    <a class="btn waves-effect waves-light" (click)="login()" >Login
+<p *ngIf="status">{{status}}</p>
+    <input type="text" name="username" [(ngModel)]="user.username" placeholder="Username" id="username" autocomplete="off" required>
+      <input type="password" name="password" [(ngModel)]="user.password" placeholder="Password" id="password" required>
+    <button type="submit" (click)="login()" class="btn">Login <i class="fas fa-sign-in-alt"></i></button>
+    <!-- <a class="btn waves-effect waves-light" (click)="login()" >Login
         <i class="material-icons">exit_to_app</i>
-    </a>
-  </div>
+    </a> -->
+  <!-- </div> -->
   <!-- </form> -->
-  <br>
-  <a (click)="routeTo()">New user? Create Account</a>
+  
+  <p><a (click)="routeTo()">New user? Create Account</a></p>
 </div>

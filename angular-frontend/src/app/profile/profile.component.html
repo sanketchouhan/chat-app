@@ -1,0 +1,6 @@
+<p>
+  profile works!
+</p>
+<img [src]="imgSrc" (click)="fileuploder.click()" width="200px" height="200px">
+<input type="file" #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile">
+<button type="submit" (click)="uploadfile()">upload</button>

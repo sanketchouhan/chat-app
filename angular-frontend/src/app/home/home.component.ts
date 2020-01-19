@@ -20,8 +20,8 @@ export class HomeComponent implements OnInit {
     // });
   }
 
-  changeWindow() {
-    this.loginWindow = !this.loginWindow;
-  }
+  // changeWindow() {
+  //   this.loginWindow = !this.loginWindow;
+  // }
 
 }

@@ -22,7 +22,8 @@ chatRouter.route('/:chatId')
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(chat);
-            }, (err) => next(err))
+            }, (err) => {
+                next(err)})
             .catch((err) => next(err));
     })
     .post((req, res, next) => {
@@ -33,25 +34,27 @@ chatRouter.route('/:chatId')
                     chat.save()
                         .then((chat) => {
                             res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
                             res.json(chat);
-                            res.end();
+                            // res.end();
                         }, (err) => {
                             res.statusCode = 200;
-                            res.json({ 'error': "save" });
+                            res.json({ 'error': "Error in saving chat" });
                         });
                 }
                 else {
                     var chat = new Chats();
                     chat.chatId = req.params.chatId;
                     chat.messages.push(req.body);
-                    // console.log(chat);
                     chat.save()
                         .then((chat) => {
                             res.statusCode = 200;
+                            res.setHeader('Content-Type', 'application/json');
                             res.json(chat);
                         }, (err) => {
                             res.statusCode = 200;
-                            res.json({ 'error': "new chat saved" });
+                            res.setHeader('Content-Type', 'application/json');
+                            res.json({ 'error': "Error in saving new chat" });
                         });
                 }
             }, (err) => next(err))

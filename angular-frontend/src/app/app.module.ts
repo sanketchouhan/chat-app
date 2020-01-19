@@ -3,7 +3,12 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // import { ReactiveFormsModule } from '@angular/forms';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDialogModule } from '@angular/material/dialog';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { environment } from '../environments/environment';
+
 import { HttpClientModule } from '@angular/common/http';
 //angular materials
 // import {MatListModule} from '@angular/material/list';
@@ -18,23 +23,18 @@ import { ChatService } from './services/chat.service';
 import { UserService } from './services/user.service';
 import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
 
-const routes:Routes= [
-  // { path: 'home',     component: HomeComponent },
-  // { path: 'home/login',     component: LoginComponent },
-  // { path: 'home/register',     component: RegisterComponent },
-  { path: 'home',  component: HomeComponent, 
-    children: [{ path: 'login',  component: LoginComponent },
-                { path: 'register',  component: RegisterComponent }] },
-  { path: 'contacts',  component: ContactsComponent, 
-    children: [{ path: 'chatroom/:user',  component: ChatroomComponent },
-                { path: 'chatroom',  component: ChatroomComponent }] },
-  // { path: 'login',     component: LoginComponent },
-  // { path: 'register',     component: },
-  { path: 'chatroom',     component: ChatroomComponent },
-  { path: 'chatroom/:user',     component: ChatroomComponent },
-  { path: '', redirectTo: 'home/login', pathMatch: 'full' },
-  { path: '**', redirectTo: 'home/login' }
+const routes: Routes = [
+  {
+    path: 'home', component: HomeComponent,
+    children: [{ path: 'login', component: LoginComponent },
+    { path: 'register', component: RegisterComponent }]
+  },
+  { path: 'contacts', component: ContactsComponent },
+  { path: 'chatroom', component: ChatroomComponent },
+  { path: '', redirectTo: '/home/login', pathMatch: 'full' },
+  { path: '**', redirectTo: '/home/login' }
 ];
 
 @NgModule({
@@ -44,7 +44,8 @@ const routes:Routes= [
     ContactsComponent,
     ChatroomComponent,
     RegisterComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -52,14 +53,17 @@ const routes:Routes= [
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     BrowserAnimationsModule,
-    // MatListModule,
-    // MatTabsModule,
-    HttpClientModule
+    MatDialogModule,
+    HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireStorageModule
   ],
   providers: [
     ChatService,
     UserService
+    // {provide: ProfileComponent, useValue: {hasBackdrop: true}}
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [ProfileComponent]
 })
 export class AppModule { }

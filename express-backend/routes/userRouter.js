@@ -13,6 +13,7 @@ userRouter.post('/login', function (req, res, next) {
             // console.log("inside find one");
             if (user != null) {
                 // console.log("inside user!=null");
+                user.password="";
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(user);
@@ -20,7 +21,7 @@ userRouter.post('/login', function (req, res, next) {
                 // console.log("inside user==null");
                 res.statusCode = 404;
                 res.setHeader('Content-Type', 'application/json');
-                res.json({ "status": "user not exist" });
+                res.json({ "status": "User does not exists" });
             }
         }, (err) => next(err))
         .catch((err) => next(err));
@@ -32,7 +33,7 @@ userRouter.post('/register', function (req, res, next) {
             if (user != null) {
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
-                res.json({ "status": "user already exist" });
+                res.json({ "status": "User already exists" });
             } else {
                 User.create(req.body)
                     .then((user) => {
@@ -40,6 +41,33 @@ userRouter.post('/register', function (req, res, next) {
                         res.setHeader('Content-Type', 'application/json');
                         res.json(user);
                     }, (err) => next(err));
+            }
+        }, (err) => next(err))
+        .catch((err) => next(err));
+});
+
+userRouter.get('/allusers', function (req, res, next) {
+    User.find()
+        .then((users) => {
+            if (users != null) {
+                // users = users.map(user => user.password = "");
+                // for (user in users) {
+                //     delete user.password;
+                //     delete user.friends;
+                //     delete user.requests;
+                // }
+                users.forEach(user => {
+                    delete user['password'];
+                    delete user['friends'];
+                    delete user['requests'];
+                });
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(users);
+            } else {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json({ "res": "No user found" });
             }
         }, (err) => next(err))
         .catch((err) => next(err));

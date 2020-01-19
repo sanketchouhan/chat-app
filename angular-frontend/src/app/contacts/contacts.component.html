@@ -1,38 +1,31 @@
 <div class="container-fluid">
+  .
   <div class="row">
-    <div class="col s12 m5 l3">
+
+    
+<!-- <div class="col col-2 col-sm-1">
+  snaket
+</div> -->
+    <div class="col col-12 col-sm-5 col-md-5 col-lg-4">
       <div class="contactsContent">
         <div class="contactsHeader">
           <span class="contactsHead">Contacts</span>
           <!-- <input type="text" name="search" placeholder="Search" class="search" id="search"> -->
-          <button onclick="search()" class="btn"><i class="fas fa-search"></i></button>
+          <button type="button" (click)="openProfileDailog()" class="btn"></button>
         </div>
         <div class="contactList">
-          <!-- <ul class="list-group list-group-flush">
-            <li class="list-group-item" *ngFor="let contact of contacts">
-              <div class="img waves-effect waves-light" (click)="openImgBox(contact.pic)"><img src={{contact.pic}}>
-
+          <ul class="contact-collection">
+            <li class="contact-item" *ngFor="let contact of contacts" (click)="onClick(contact)">
+              <div class="img" (click)="openImgBox(contact.pic)"><img src={{contact.profilePicUrl}} class="img-fluid">
               </div>
-              <p class="contactsName waves-effect waves-light" (click)="onClick(contact)">{{contact.user}}
-                <i class="material-icons">bubble_chart</i></p>
-            </li>
-          </ul> -->
-          <ul class="collection">
-            <li class="collection-item" *ngFor="let contact of contacts">
-              <div class="img waves-effect waves-light" (click)="openImgBox(contact.pic)"><img src={{contact.pic}}
-                  class="circle">
-              </div>
-              <p class="contactsName waves-effect waves-light" (click)="onClick(contact)">{{contact.user}}
-                <i class="material-icons right online">question_answer</i></p>
+              <p class="contactsName" >{{contact.username}}</p>
             </li>
           </ul>
         </div>
       </div>
-      <!--  -->
     </div>
-    <div class="col s12 m7 l9 cr">
-      <router-outlet></router-outlet>
-      <!-- <app-chatroom></app-chatroom> -->
+    <div class="col contact-chatroom">
+      <app-chatroom></app-chatroom>
     </div>
   </div>
 </div>

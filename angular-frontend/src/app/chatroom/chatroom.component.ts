@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 // import * as $ from 'jquery';
 import * as io from 'socket.io-client';
-import { ActivatedRoute } from '@angular/router';
 import { UserService } from '../services/user.service';
+import { ChatService } from '../services/chat.service';
+import { user } from '../models/user';
 
 @Component({
   selector: 'app-chatroom',
@@ -11,51 +12,62 @@ import { UserService } from '../services/user.service';
 })
 export class ChatroomComponent implements OnInit {
 
-  chatUser: string = "";
-  picUrl: string = "";
+  messages = [];
+  chatuser: user = {
+    _id: "",
+    username: "",
+    password: "",
+    profilePicUrl: "",
+    friends: null,
+    requests: null
+  };
   socket: any;
-  user: string;
+  user: user;
   chatRoomName: string;
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {
-    // this.route.queryParams.subscribe(params => {
-    // console.log(params);
-    // this.chatUser = params['user'];
-    // this.picUrl = params['pic'];
-    // console.log(this.chatUser);
-    // console.log(this.picUrl);
-    // });
-
+  constructor(private _userService: UserService, private _chatService: ChatService) {
   }
 
   ngOnInit() {
+    //initialise socket.io
+    this.socket = io('/');
 
-    this.userService.chatroomUser.subscribe((data) => {
-      console.log(data);
-      this.chatUser = data.user;
-      this.picUrl = data.pic;
+    this._chatService.chatroomUser.subscribe((data) => {
+      this.chatuser = data;
+      this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
+      console.log(this.chatRoomName);
+      this.socket.emit("joinPC", { room: this.chatRoomName });
+
+      // console.log(this.chatuser);
     });
 
+    this.user = this._userService.getUser();
+    this.chatuser = this._chatService.getChatUser();
+
     console.log("initialize");
-    this.user = this.userService.getUser().username;
-    this.chatRoomName = this.user.toLowerCase() > this.chatUser.toLowerCase() ? this.user.toLowerCase() + "." + this.chatUser.toLowerCase() : this.chatUser.toLowerCase() + "." + this.user.toLowerCase();
-    // console.log(this.chatRoomName);
-    // var room = this.chatRoomName;
-    this.socket = io('/');
+
+    this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
+
+    // this.user = this.userService.getUser().username;
+
     // var socketOnInit = this.socket;
     this.socket.on('connect', () => {
       console.log("connection made");
       this.socket.emit("joinPC", { room: this.chatRoomName });
-
     });
 
     this.socket.on('chatMsg', (data) => {
       // console.log(data);
-      if (data.sender != this.user) {
+      if (data.sender != this.user._id) {
         this.messages.unshift({
           "user": "user2",
           "msg": data.chatMsg
         })
+      } else {
+        // this.messages.unshift({
+        //   "user": "user1",
+        //   "msg": this.textMsg
+        // })
       }
     });
   }
@@ -90,18 +102,19 @@ export class ChatroomComponent implements OnInit {
       this.socket.emit('message', {
         text: this.textMsg,
         room: this.chatRoomName,
-        sender: this.user
+        sender: this.user._id,
+        receiver: this.chatuser._id
       });
       this.messages.unshift({
         "user": "user1",
         "msg": this.textMsg
       })
       this.textMsg = "";
+      this._chatService.sendText(this.chatRoomName, { "sender": this.user._id, "messageBody": this.textMsg }).subscribe((data) => {
+
+      });
       // this.do_resize($('#textMsg'));
     }
   }
-
-
-  messages = []
 
 }
