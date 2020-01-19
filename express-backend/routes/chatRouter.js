@@ -39,13 +39,13 @@ chatRouter.route('/:chatId')
                             // res.end();
                         }, (err) => {
                             res.statusCode = 200;
-                            res.json({ 'error': "Error in saving chat" });
+                            res.json({ 'error': "Error in saving chat"+err });
                         });
                 }
                 else {
                     var chat = new Chats();
                     chat.chatId = req.params.chatId;
-                    chat.messages.push(req.body);
+                    chat.messages.push({"sender": req.body.sender, "messageBody": req.body.messageBody});
                     chat.save()
                         .then((chat) => {
                             res.statusCode = 200;

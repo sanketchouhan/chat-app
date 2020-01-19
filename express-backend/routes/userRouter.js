@@ -13,7 +13,7 @@ userRouter.post('/login', function (req, res, next) {
             // console.log("inside find one");
             if (user != null) {
                 // console.log("inside user!=null");
-                user.password="";
+                user.password = "";
                 res.statusCode = 200;
                 res.setHeader('Content-Type', 'application/json');
                 res.json(user);
@@ -50,12 +50,6 @@ userRouter.get('/allusers', function (req, res, next) {
     User.find()
         .then((users) => {
             if (users != null) {
-                // users = users.map(user => user.password = "");
-                // for (user in users) {
-                //     delete user.password;
-                //     delete user.friends;
-                //     delete user.requests;
-                // }
                 users.forEach(user => {
                     delete user['password'];
                     delete user['friends'];
@@ -69,6 +63,16 @@ userRouter.get('/allusers', function (req, res, next) {
                 res.setHeader('Content-Type', 'application/json');
                 res.json({ "res": "No user found" });
             }
+        }, (err) => next(err))
+        .catch((err) => next(err));
+});
+
+userRouter.post('/profilePicupdate/:userId', function (req, res, next) {
+    User.update({ _id: req.params.userId }, { $set: { profilePicUrl: req.body.url } })
+        .then((users) => {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(users);
         }, (err) => next(err))
         .catch((err) => next(err));
 });

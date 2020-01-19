@@ -4,7 +4,6 @@ import * as io from 'socket.io-client';
 import * as $ from 'jquery';
 import { UserService } from '../services/user.service';
 import { user } from '../models/user'
-import Swal from 'sweetalert2'
 
 @Component({
   selector: 'app-login',

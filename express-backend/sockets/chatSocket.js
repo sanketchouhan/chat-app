@@ -11,7 +11,7 @@ module.exports = function(io){
         socket.on('message',(msg)=>{
             // console.log(msg);
             socket.to(msg.room).emit('chatMsg',{
-            chatMsg:msg.text,
+            chatMsg:msg.messageBody,
             sender:msg.sender
             });
         });

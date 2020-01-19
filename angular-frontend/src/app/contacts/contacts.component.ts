@@ -23,11 +23,12 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit() {
     // this.user = this._userService.getUser();
-    // console.log(JSON.parse(localStorage.getItem("isLoggedIn")));
+    // console.log(JSON.parse(localStorage.getItem("LoggedInUser")));
     // this.contacts = this._userService.getUser().friends;
 
     // this.contacts = this._chatService.getContacts(this.user.username);
 
+    //test purpose
     this._userService.getAllUser().subscribe((data) => {
       this.contacts = data;
     },(err)=>{
@@ -46,11 +47,6 @@ export class ContactsComponent implements OnInit {
     if ($(window).outerWidth() < 576) {
       this._route.navigate(["/chatroom"]);
     }
-    // else {
-    //   // this._route.navigate(["contacts/chatroom"], { queryParams: contact });
-    //   this._route.navigate(["contacts/chatroom"]);
-    // }
-
   }
 
   openImgBox(contactPic) {
@@ -61,7 +57,7 @@ export class ContactsComponent implements OnInit {
   openProfileDailog(){
     const dialogRef = this.dialog.open(ProfileComponent, {
       height: '80%',
-      width: '30rem'
+      width: '20rem'
     });
 
     // dialogRef.afterClosed().subscribe(result => {

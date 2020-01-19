@@ -16,10 +16,7 @@ body{
     height: 100vh;
 }
 
-.swal2-title{
-    font-size:20px !important;
-}
-.swal2-actions.swal2-loading .swal2-styled.swal2-confirm{
-    height: 1.5rem !important;
-    width: 1.5rem !important;
+.mat-dialog-container {
+    padding: 0 !important;
+    margin: 0 !important;
 }

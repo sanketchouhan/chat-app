@@ -79,7 +79,7 @@ img{
     background: white;
     border-radius: 10px;
     border-top-left-radius: 0;
-    padding: .5rem .8rem;
+    padding: .3rem .8rem;
     max-width:80%; 
     color: black;
     float: left;
@@ -91,7 +91,7 @@ img{
     background-image: linear-gradient(to right bottom, #f54b64, #f75b61, #f76960, #f77660, #f78361);
     border-radius: 10px;
     border-top-right-radius: 0;
-    padding: .5rem .8rem;
+    padding: .3rem .8rem;
     max-width: 80%;
     color: white;
     float: right;

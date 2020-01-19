@@ -22,7 +22,11 @@ export class UserService {
     return this.http.post("/user/register", user);
   }
 
-  getAllUser(){
+  updateProfilePic(userId, profilePicUrl) {
+    return this.http.post("/user/profilePicupdate/" + userId, profilePicUrl);
+  }
+
+  getAllUser() {
     return this.http.get("/user/allusers");
   }
 

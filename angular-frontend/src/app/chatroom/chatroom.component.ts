@@ -32,36 +32,57 @@ export class ChatroomComponent implements OnInit {
     //initialise socket.io
     this.socket = io('/');
 
+    this.user = this._userService.getUser();
+    this.chatuser = this._chatService.getChatUser();
+
+    // this._userService.getAllUser().subscribe((data) => {
+    //   this.chatuser = data[0];
+    // }, (err) => {
+    //   console.log(err);
+    // });
+
+
+    //chat room user event emitter variable
     this._chatService.chatroomUser.subscribe((data) => {
       this.chatuser = data;
       this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
       console.log(this.chatRoomName);
       this.socket.emit("joinPC", { room: this.chatRoomName });
-
-      // console.log(this.chatuser);
+      this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
+        if (data) {
+          console.log(data.messages);
+          this.messages = data.messages;
+          this.messages.reverse();
+        } else {
+          this.messages = [];
+        }
+      });
     });
 
-    this.user = this._userService.getUser();
-    this.chatuser = this._chatService.getChatUser();
-
     console.log("initialize");
-
     this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
+    this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
+      if (data) {
+        console.log(data.messages);
+        this.messages = data.messages;
+        this.messages.reverse();
+      } else {
+        this.messages = [];
+      }
+    });
+    
 
-    // this.user = this.userService.getUser().username;
-
-    // var socketOnInit = this.socket;
+    // client socket.io initialization
     this.socket.on('connect', () => {
       console.log("connection made");
       this.socket.emit("joinPC", { room: this.chatRoomName });
     });
 
     this.socket.on('chatMsg', (data) => {
-      // console.log(data);
       if (data.sender != this.user._id) {
         this.messages.unshift({
-          "user": "user2",
-          "msg": data.chatMsg
+          "sender": data.sender,
+          "messageBody": data.chatMsg
         })
       } else {
         // this.messages.unshift({
@@ -100,20 +121,20 @@ export class ChatroomComponent implements OnInit {
     // console.log(this.textMsg);
     if (this.textMsg.trim().length > 0) {
       this.socket.emit('message', {
-        text: this.textMsg,
         room: this.chatRoomName,
-        sender: this.user._id,
-        receiver: this.chatuser._id
+        messageBody: this.textMsg,
+        sender: this.user._id
+        // receiver: this.chatuser._id
       });
       this.messages.unshift({
-        "user": "user1",
-        "msg": this.textMsg
+        "sender": this.user._id,
+        "messageBody": this.textMsg
       })
-      this.textMsg = "";
+      
       this._chatService.sendText(this.chatRoomName, { "sender": this.user._id, "messageBody": this.textMsg }).subscribe((data) => {
-
+        console.log(data);
       });
-      // this.do_resize($('#textMsg'));
+      this.textMsg = "";
     }
   }
 

@@ -18,8 +18,8 @@
           </div>
           <div class="messageBox">
             <div class="box" *ngFor="let message of messages">
-              <div class="usermsg" *ngIf="message.user=='user1'; else elseBlock">
-                {{message.msg}}
+              <div class="usermsg" *ngIf="message.sender==user._id; else elseBlock">
+                {{message.messageBody}}
                 <div class="sending" *ngIf="sending">
                   <div class="preloader-wrapper small active">
                     <div class="spinner-layer spinner-blue-only">
@@ -39,7 +39,7 @@
 
               <ng-template #elseBlock>
                 <div class="user2msg">
-                  {{message.msg}}
+                  {{message.messageBody}}
                 </div>
               </ng-template>
             </div>

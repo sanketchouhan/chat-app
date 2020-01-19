@@ -1,6 +1,17 @@
-<p>
-  profile works!
-</p>
-<img [src]="imgSrc" (click)="fileuploder.click()" width="200px" height="200px">
-<input type="file" #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile">
-<button type="submit" (click)="uploadfile()">upload</button>
+<div class="profilecontent">
+  <h3>Edit Profile</h3>
+  <div class="imguploader">
+    <img [src]="imgSrc" (click)="fileuploder.click()">
+    <input type="file" hidden #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile">
+  </div>
+  <h5>{{user.username}}</h5>
+  <button type="submit" class="btn" (click)="uploadfile()">Upload</button>
+</div>
+
+
+
+
+
+<!-- <img [src]="imgSrc" (click)="fileuploder.click()" width="200px" height="200px"> -->
+<!-- <input type="file" #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile"> -->
+<!-- <button type="submit" (click)="uploadfile()">upload</button> -->
