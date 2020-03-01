@@ -46,9 +46,9 @@ app.use(express.static(path.join(__dirname, './public/chat-app/')));
 app.use('/user', userRouter);
 app.use('/chats', chatRouter);
 
-// app.get("*", (req, res) => {
-//     return res.sendFile(path.join(__dirname, "./public/chat-app/index.html"));
-// });
+app.get('/*', (req, res) => {
+    res.sendFile(path.join(__dirname, "./public/chat-app/","index.html"));
+});
 
 
 // app.use('/', indexRouter);

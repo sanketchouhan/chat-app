@@ -2,7 +2,7 @@ var express = require('express');
 
 module.exports = function(io){
     io.on('connection',(socket)=>{
-        console.log("connection"+ socket);
+        // console.log("connection"+ socket);
 
         socket.on("joinPC",(chatRoom)=>{
             // console.log(chatRoom.room);

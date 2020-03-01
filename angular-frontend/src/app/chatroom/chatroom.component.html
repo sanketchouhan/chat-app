@@ -4,16 +4,13 @@
       <div class="chatContent">
         <div class="chatHeader">
           <a routerLink="/contacts"><i class="fas fa-chevron-left"></i></a>
-            <img src={{chatuser.profilePicUrl}} alt="">
-            <span class="chatHead">{{chatuser.username}}</span>
+          <img src={{chatuser.profilePicUrl}} alt="">
+          <span class="chatHead">{{chatuser.username}}</span>
         </div>
 
         <div class="chatContainer">
           <div class="chatBox">
-            <!-- <div class="input-field"> -->
-              <textarea rows="1" [(ngModel)]="textMsg" placeholder="Type your message here"></textarea>
-            <!-- </div> -->
-            <!--(keyup)="do_resize(this.textMsg)" -->
+            <textarea rows="1" [(ngModel)]="textMsg" placeholder="Type your message here"></textarea>
             <button class="btn" (click)="onSubmit()"><i class="fas fa-location-arrow"></i></button>
           </div>
           <div class="messageBox">

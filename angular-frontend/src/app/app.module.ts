@@ -10,10 +10,9 @@ import { AngularFireStorageModule } from '@angular/fire/storage';
 import { environment } from '../environments/environment';
 
 import { HttpClientModule } from '@angular/common/http';
-//angular materials
-// import {MatListModule} from '@angular/material/list';
-// import {MatTabsModule} from '@angular/material/tabs';
 import { Observable } from 'rxjs'
+
+import {NgxImageCompressService} from 'ngx-image-compress';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -33,6 +32,7 @@ const routes: Routes = [
   },
   { path: 'contacts', component: ContactsComponent },
   { path: 'chatroom', component: ChatroomComponent },
+  { path: 'home', redirectTo: '/home/login', pathMatch: 'full' },
   { path: '', redirectTo: '/home/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/home/login' }
 ];
@@ -60,7 +60,8 @@ const routes: Routes = [
   ],
   providers: [
     ChatService,
-    UserService
+    UserService,
+    NgxImageCompressService
     // {provide: ProfileComponent, useValue: {hasBackdrop: true}}
   ],
   bootstrap: [AppComponent],

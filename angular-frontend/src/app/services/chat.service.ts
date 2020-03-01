@@ -7,8 +7,6 @@ import { HttpClient } from '@angular/common/http';
 })
 export class ChatService {
 
-
-
   contacts = [
     {
       "user": "Sanket",
@@ -71,7 +69,10 @@ export class ChatService {
 
   chatroomUser = new EventEmitter();  //chatroom user details
 
-  constructor(private http:HttpClient) { }
+  overlay = new EventEmitter(); //overlay show/hide variable
+
+  constructor(private http:HttpClient) { 
+  }
 
   // getContacts(username) {
   //   return this.contacts.filter(contact => contact.user.toLowerCase() != username.toLowerCase());

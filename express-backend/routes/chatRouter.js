@@ -30,7 +30,7 @@ chatRouter.route('/:chatId')
         Chats.findOne({ chatId: req.params.chatId })
             .then((chat) => {
                 if (chat != null) {
-                    chat.messages.push(req.body);
+                    chat.messages.unshift(req.body);
                     chat.save()
                         .then((chat) => {
                             res.statusCode = 200;

@@ -2,8 +2,23 @@
   <h3>Edit Profile</h3>
   <div class="imguploader">
     <img [src]="imgSrc" (click)="fileuploder.click()">
+    
+    <!-- [imageChangedEvent]="imageChangedEvent"  -->
+    <!-- <image-cropper 
+    [imageFileChanged]="imageChangedEvent" 
+    [maintainAspectRatio]="true" 
+    [aspectRatio]="1 / 1"
+    [resizeToWidth]="100" 
+    (imageCropped)="imageCropped($event)" 
+    (imageLoaded)="imageLoaded()"
+    (cropperReady)="cropperReady()" 
+    (loadImageFailed)="loadImageFailed()"></image-cropper> -->
+    <!-- <img #image [src]="imageSource" crossorigin> -->
+<!-- upload($event) -->
     <input type="file" hidden #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile">
   </div>
+
+
   <h5>{{user.username}}</h5>
   <button type="submit" class="btn" (click)="uploadfile()">Upload</button>
 </div>

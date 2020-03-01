@@ -33,48 +33,46 @@ export class ChatroomComponent implements OnInit {
     this.socket = io('/');
 
     this.user = this._userService.getUser();
-    this.chatuser = this._chatService.getChatUser();
-
-    // this._userService.getAllUser().subscribe((data) => {
-    //   this.chatuser = data[0];
-    // }, (err) => {
-    //   console.log(err);
-    // });
+    if (this._chatService.getChatUser()) {
+      this.chatuser = this._chatService.getChatUser();
+    } else {
+      this.chatuser.username = "Unknown";
+      this.chatuser.profilePicUrl= "../../assets/images/defaultProfile.png";
+    }
 
 
     //chat room user event emitter variable
     this._chatService.chatroomUser.subscribe((data) => {
       this.chatuser = data;
       this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
-      console.log(this.chatRoomName);
+      // console.log(this.chatRoomName);
       this.socket.emit("joinPC", { room: this.chatRoomName });
       this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
         if (data) {
-          console.log(data.messages);
+          // console.log(data.messages);
           this.messages = data.messages;
-          this.messages.reverse();
         } else {
           this.messages = [];
         }
       });
     });
 
-    console.log("initialize");
+    // console.log("initialize");
     this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
     this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
       if (data) {
-        console.log(data.messages);
+        // console.log(data.messages);
         this.messages = data.messages;
-        this.messages.reverse();
+        // this.messages.reverse();
       } else {
         this.messages = [];
       }
     });
-    
+
 
     // client socket.io initialization
     this.socket.on('connect', () => {
-      console.log("connection made");
+      // console.log("connection made");
       this.socket.emit("joinPC", { room: this.chatRoomName });
     });
 
@@ -130,9 +128,18 @@ export class ChatroomComponent implements OnInit {
         "sender": this.user._id,
         "messageBody": this.textMsg
       })
-      
+
       this._chatService.sendText(this.chatRoomName, { "sender": this.user._id, "messageBody": this.textMsg }).subscribe((data) => {
-        console.log(data);
+        // console.log(data);
+        // for(let i=0;i<this.user.friends.length;i++){
+        //   if (this.user.friends[i]._id == this.chatuser._id) {
+        //     let temp = this.chatuser;
+        //     this.user.friends.splice(i, 1);
+        //     this.user.friends.unshift(temp);
+        //     break;
+        //   }
+        // }
+
       });
       this.textMsg = "";
     }

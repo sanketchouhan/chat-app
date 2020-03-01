@@ -4,6 +4,7 @@ import * as io from 'socket.io-client';
 import * as $ from 'jquery';
 import { UserService } from '../services/user.service';
 import { user } from '../models/user'
+import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { user } from '../models/user'
 export class LoginComponent implements OnInit {
 
   // socket: any;
-  constructor(private _route: Router, private _userService: UserService) {
+  constructor(private _route: Router, private _userService: UserService, private _chatService: ChatService) {
     // this.socket = io('http://localhost:3000');
 
     // this.socket.on('connect', function () {
@@ -36,11 +37,14 @@ export class LoginComponent implements OnInit {
 
 
   login() {
+    this._chatService.overlay.emit(true);
     this._userService.loginUser(this.user).subscribe(
       (data: any) => {
         //when login successful
+        this._chatService.overlay.emit(false);
         if (data.username) {
           this._userService.setUser(data);
+          this._chatService.setChatUser(data.friends[0]);
           localStorage.setItem("LoggedInUser", JSON.stringify(data));
           this._route.navigate(["contacts"]);
         } else {
@@ -48,11 +52,10 @@ export class LoginComponent implements OnInit {
         }
       },
       err => {
-        console.log(err);
+        this._chatService.overlay.emit(false);
+        // console.log(err);
       }
     )
-    // Make sure the client is loaded and sign-in is complete before calling this method.
-    // this._route.navigate(["contacts"]);
   }
 
   routeTo() {
