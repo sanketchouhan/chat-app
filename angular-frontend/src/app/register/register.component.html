@@ -1,19 +1,32 @@
-<div class="box">
+<img src="../../assets/images/back.png" alt="" class="back-btn" [routerLink]="['']">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Create an account</h1>
+    </div>
+    <div class="col-sm-6">
+      <div class="box">
+        <h2>Create an account</h2>
+        <p *ngIf="status">{{status}}</p>
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
 
-  <p *ngIf="status">{{status}}</p>
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit(registerForm.value)">
+          <input type="text" formControlName="username" id="username" placeholder="Username" autocomplete="off" required
+            maxlength="20">
 
-    <input type="text" formControlName="username" id="username" placeholder="Username" autocomplete="off" required
-      maxlength="20">
+          <input type="email" formControlName="email" id="email" placeholder="Email" autocomplete="off" required
+            maxlength="40">
 
-    <input type="password" formControlName="password" id="password" placeholder="Password" required maxlength="20">
+          <input type="password" formControlName="password" id="password" placeholder="Password" required
+            maxlength="20">
 
-    <input type="password" formControlName="confirmpassword" id="confirmpassword" placeholder="ConfirmPassword" required
-      maxlength="20">
+          <input type="password" formControlName="confirmpassword" id="confirmpassword" placeholder="ConfirmPassword"
+            required maxlength="20">
 
-    <button type="submit" [disabled]="!registerForm.valid" class="btn">Register <i class="material-icons"></i></button>
-  </form>
+          <button type="submit" [disabled]="!registerForm.valid" class="btn">Register</button>
+        </form>
 
-  <p><a (click)="routeTo()">Already have an account? Sign in</a></p>
-
+        <p [routerLink]="['/login']">Already have an account? Sign in</p>
+      </div>
+    </div>
+  </div>
 </div>

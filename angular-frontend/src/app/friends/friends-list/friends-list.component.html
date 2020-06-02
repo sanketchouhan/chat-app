@@ -1,0 +1,20 @@
+<div class="contactList">
+    <ul class="contact-collection">
+        <li class="contact-item" *ngFor="let contact of contacts" (click)="onClick(contact)">
+            <div class="img" (click)="openProfile(contact)">
+                <img src={{contact.profilePicUrl}} class="img-fluid">
+            </div>
+            <!-- <div class="click-tab"> -->
+            <div class="content">
+                <p class="contactsName">{{contact.username}}</p>
+                <!-- <p class="last-message">{{contact.lastMessage}}</p> -->
+            </div>
+            <div class="m-auto"></div>
+            <!-- *ngIf="contact.new" -->
+            <div class="new" *ngIf="contact.new">
+                <img src="../../../assets/images/new-message-1.png" alt="">
+            </div>
+            <!-- </div> -->
+        </li>
+    </ul>
+</div>

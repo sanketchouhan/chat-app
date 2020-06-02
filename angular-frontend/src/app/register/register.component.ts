@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
+import { UserService } from '../service/user.service';
+import { Router } from '@angular/router';
+import { ChatService } from '../service/chat.service';
+import { user } from '../models/user';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { matchPassword } from '../shared/matchPassword.derictive';
-import { Router } from '@angular/router';
-import { user } from '../models/user';
-import { ChatService } from '../services/chat.service';
 
 @Component({
   selector: 'app-register',
@@ -14,50 +14,50 @@ import { ChatService } from '../services/chat.service';
 export class RegisterComponent implements OnInit {
 
   user: user = {
-    _id:"",
+    _id: "",
     username: "",
     password: "",
+    email: "",
     profilePicUrl: "../../assets/images/defaultProfile.png",
     friends: [],
     requests: [],
   };
 
-  status:string;
-  
+  status: string;
+
   constructor(private _userService: UserService, private _route: Router, private _chatService: ChatService) { }
 
   ngOnInit() {
   }
 
+  //register form controls
   registerForm = new FormGroup({
-    username: new FormControl('',[Validators.required,Validators.minLength(4)]),
-    password: new FormControl('',[Validators.required,Validators.minLength(4)]),
-    confirmpassword: new FormControl('',[Validators.required,Validators.minLength(4)])
-  },{ validators: matchPassword });
+    username: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    email: new FormControl('', [Validators.required, Validators.minLength(10)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(4)]),
+    confirmpassword: new FormControl('', [Validators.required, Validators.minLength(4)])
+  }, { validators: matchPassword });
 
-  onSubmit(value){
+
+  //on register form submit
+  onSubmit(value) {
     this._chatService.overlay.emit(true);
-    this.user.username=value.username;
-    this.user.password=value.password;
-    // console.log(value);
-    // console.log(this.user);
-    this._userService.registerUser(this.user).subscribe((data:any)=>{
+    this.user.username = value.username;
+    this.user.password = value.password;
+    this.user.email = value.email;
+    this._userService.registerUser({ email: value.email }).subscribe((data: any) => {
       this._chatService.overlay.emit(false);
-      if(data.username){
-        this._userService.setUser(data);
-        localStorage.setItem("LoggedInUser", JSON.stringify(data));
-        this._route.navigate(["contacts"]);
+      if (data) {
+        this._userService.setLocalRegisterUser(this.user);
+        this._route.navigate(["/register/confirmotp"]);
       }else{
-        this.status=data.status;
+        this.status = "Something went wrong! Please try again";
       }
     },
-    (err)=>{
-      this._chatService.overlay.emit(false);
-      // console.log(err);
-    });
+      (err) => {
+        this.status = err.error.status;
+        this._chatService.overlay.emit(false);
+      });
   }
 
-  routeTo(){
-    this._route.navigate(["home/login"]);
-  }
 }

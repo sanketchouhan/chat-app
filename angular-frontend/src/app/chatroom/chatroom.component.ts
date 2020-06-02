@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-// import * as $ from 'jquery';
-import * as io from 'socket.io-client';
-import { UserService } from '../services/user.service';
-import { ChatService } from '../services/chat.service';
 import { user } from '../models/user';
+import { UserService } from '../service/user.service';
+import { ChatService } from '../service/chat.service';
+import { SocketService } from '../service/socket.service';
 
 @Component({
   selector: 'app-chatroom',
@@ -17,132 +16,321 @@ export class ChatroomComponent implements OnInit {
     _id: "",
     username: "",
     password: "",
+    email: "",
     profilePicUrl: "",
     friends: null,
     requests: null
   };
-  socket: any;
   user: user;
   chatRoomName: string;
+  textMsg: string = '';
+  online: boolean = false;
 
-  constructor(private _userService: UserService, private _chatService: ChatService) {
-  }
+  constructor(private _userService: UserService, private _chatService: ChatService, private _socket: SocketService) { }
 
   ngOnInit() {
-    //initialise socket.io
-    this.socket = io('/');
 
+    //  get global user
     this.user = this._userService.getUser();
-    if (this._chatService.getChatUser()) {
-      this.chatuser = this._chatService.getChatUser();
+
+    //get chat user from chatService
+    let chatuser = this._chatService.getChatUser();
+    if (chatuser.username.length > 0) {
+      this.chatuser = chatuser;
     } else {
-      this.chatuser.username = "Unknown";
-      this.chatuser.profilePicUrl= "../../assets/images/defaultProfile.png";
+      if (this.user.friends.length > 0) {
+        this.chatuser = this.user.friends[0];
+      } else {
+        this.chatuser._id = "000000" //random id
+        this.chatuser.username = "Unknown";
+        this.chatuser.profilePicUrl = "../../assets/images/defaultProfile.png";
+      }
     }
 
-
-    //chat room user event emitter variable
+    //get chat user from Event emitter chatUser
     this._chatService.chatroomUser.subscribe((data) => {
       this.chatuser = data;
-      this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
-      // console.log(this.chatRoomName);
-      this.socket.emit("joinPC", { room: this.chatRoomName });
-      this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
-        if (data) {
-          // console.log(data.messages);
-          this.messages = data.messages;
-        } else {
-          this.messages = [];
-        }
-      });
+      this.messages = [];
+      this.createRoomNameAndGetMessages();
     });
 
-    // console.log("initialize");
-    this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
-    this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
-      if (data) {
-        // console.log(data.messages);
-        this.messages = data.messages;
-        // this.messages.reverse();
-      } else {
-        this.messages = [];
-      }
-    });
+    //create room id and fetch messages
+    this.createRoomNameAndGetMessages();
 
+    //check online
+    setInterval(() => {
+      this._socket.checkOnline(this.user._id, this.chatuser._id);
+    }, 5000);
 
-    // client socket.io initialization
-    this.socket.on('connect', () => {
-      // console.log("connection made");
-      this.socket.emit("joinPC", { room: this.chatRoomName });
-    });
-
-    this.socket.on('chatMsg', (data) => {
-      if (data.sender != this.user._id) {
+    //update messages array with incoming chat message
+    this._socket.chatMessage.subscribe((data) => {
+      if (data.sender != this.user._id && data.sender == this.chatuser._id) {
         this.messages.unshift({
           "sender": data.sender,
           "messageBody": data.chatMsg
         })
-      } else {
-        // this.messages.unshift({
-        //   "user": "user1",
-        //   "msg": this.textMsg
-        // })
+      }
+    });
+
+    //set if friend is online
+    this._socket.online.subscribe((data) => {
+      this.online = data;
+    });
+
+  }
+
+  //create room id and fetch messages
+  createRoomNameAndGetMessages() {
+
+    //create room id
+    this.chatRoomName = this.user._id > this.chatuser._id ? this.user._id + "." + this.chatuser._id : this.chatuser._id + "." + this.user._id;
+
+    //get messages for this room id
+    this._chatService.getMessages(this.chatRoomName).subscribe((data: any) => {
+      if (data) {
+        this.messages = data.messages;
       }
     });
   }
 
-  rows: number = 1;
-  // do_resize(textbox) {
-  //   console.log(textbox);
-  //   // let maxrows: number = 3;
-  //   // let txt = textbox;
-  //   let cols: number = 34;
-
-  //   // var arraytxt = txt.split('\n');
-  //   // let rows: number = arraytxt.length;
-
-  //   // for (let i = 0; i < arraytxt.length; i++) {
-  //   //   rows += arraytxt[i].length / cols;
-  //   // }
-  //   if (textbox.length > cols) {
-  //     if ((textbox.length % cols) > 0) {
-  //       if (this.rows < 3)
-  //         this.rows++;
-  //     }
-  //   }
-
-  // }
-
-  textMsg: string = "";
-
+  //on chat message send
   onSubmit() {
-    // console.log(this.textMsg);
     if (this.textMsg.trim().length > 0) {
-      this.socket.emit('message', {
-        room: this.chatRoomName,
-        messageBody: this.textMsg,
-        sender: this.user._id
-        // receiver: this.chatuser._id
-      });
+
+      //update messages array
       this.messages.unshift({
         "sender": this.user._id,
         "messageBody": this.textMsg
-      })
-
-      this._chatService.sendText(this.chatRoomName, { "sender": this.user._id, "messageBody": this.textMsg }).subscribe((data) => {
-        // console.log(data);
-        // for(let i=0;i<this.user.friends.length;i++){
-        //   if (this.user.friends[i]._id == this.chatuser._id) {
-        //     let temp = this.chatuser;
-        //     this.user.friends.splice(i, 1);
-        //     this.user.friends.unshift(temp);
-        //     break;
-        //   }
-        // }
-
       });
+
+      //send message to socketIO
+      this._socket.sendMessage(this.textMsg, this.user._id, this.chatuser._id);
+
+      //send message to database
+      this._chatService.sendText(this.chatRoomName, { "sender": this.user._id, "messageBody": this.textMsg }).subscribe((data) => {
+
+        //bring this chat user above in friend list
+        let friends = this.user.friends.filter(i => i._id != this.chatuser._id);
+        friends.unshift(this.chatuser);
+        this.user.friends = friends;
+        this._userService.setUser(this.user);
+      });
+
       this.textMsg = "";
     }
+
   }
+
+  // messages = [
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   },
+  //   {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   }, {
+  //     sender: '1',
+  //     messageBody: 'hi'
+  //   },
+  //   {
+  //     sender: '2',
+  //     messageBody: 'hi hello'
+  //   }
+  // ]
+
 
 }

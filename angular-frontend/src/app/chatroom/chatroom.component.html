@@ -1,49 +1,35 @@
-<div class="chatRoom container">
-  <div class="row">
-    <div class="col-12">
-      <div class="chatContent">
-        <div class="chatHeader">
-          <a routerLink="/contacts"><i class="fas fa-chevron-left"></i></a>
-          <img src={{chatuser.profilePicUrl}} alt="">
-          <span class="chatHead">{{chatuser.username}}</span>
+<div class="chat-content">
+    <div class="chat-header">
+        <a routerLink="/friends"><img src="../../assets/images/back.png" alt="" class="back-btn"></a>
+        <img src={{chatuser.profilePicUrl}} alt="" class="chat-user-img">
+        <!-- <span class="chat-user-name">{{chatuser.username}}</span> -->
+        <div class="chat-user-content">
+            <p class="chat-user-name">{{chatuser.username}}</p>
+            <p class="online" *ngIf="online">online</p>
+            <!-- *ngIf="online" -->
         </div>
-
-        <div class="chatContainer">
-          <div class="chatBox">
-            <textarea rows="1" [(ngModel)]="textMsg" placeholder="Type your message here"></textarea>
-            <button class="btn" (click)="onSubmit()"><i class="fas fa-location-arrow"></i></button>
-          </div>
-          <div class="messageBox">
-            <div class="box" *ngFor="let message of messages">
-              <div class="usermsg" *ngIf="message.sender==user._id; else elseBlock">
-                {{message.messageBody}}
-                <div class="sending" *ngIf="sending">
-                  <div class="preloader-wrapper small active">
-                    <div class="spinner-layer spinner-blue-only">
-                      <div class="circle-clipper left">
-                        <div class="circle"></div>
-                      </div>
-                      <div class="gap-patch">
-                        <div class="circle"></div>
-                      </div>
-                      <div class="circle-clipper right">
-                        <div class="circle"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <ng-template #elseBlock>
-                <div class="user2msg">
-                  {{message.messageBody}}
-                </div>
-              </ng-template>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-    <!-- <div class="col-lg-1"></div> -->
-  </div>
+
+    <div class="chat-container">
+        <div class="message-box">
+            <div class="box" *ngFor="let message of messages">
+                <div class="usermsg" *ngIf="message.sender==user._id; else elseBlock">
+                    <!-- <div class="usermsg" *ngIf="message.sender==1; else elseBlock"> -->
+                    {{message.messageBody}}
+                </div>
+
+                <ng-template #elseBlock>
+                    <div class="user2msg">
+                        {{message.messageBody}}
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="chat-box">
+            <textarea rows="1" [(ngModel)]="textMsg" placeholder="Type your message here"></textarea>
+            <div class="send-btn" (click)="onSubmit()"><img src="../../assets/images/send.png" alt=""
+                    class="send-btn-img"></div>
+        </div>
+    </div>
 </div>

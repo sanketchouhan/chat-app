@@ -1,6 +1,7 @@
 export class user{
-    _id:"";
+    _id:string;
     username:string;
+    email:string;
     password:string;
     profilePicUrl:string;
     friends:any[];

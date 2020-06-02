@@ -1,0 +1,17 @@
+<div class="notificationList">
+    <ul class="notification-collection">
+        <li class="notification-item" *ngFor="let request of requests">
+            <div class="img" (click)="showProfile(request)">
+                <img src={{request.profilePicUrl}} class="img-fluid">
+            </div>
+            <p class="notificationName">{{request.username}}</p>
+            <div class="m-auto"></div>
+            <button class="requests-btn btn" (click)="confirmRequest(request)">
+                <img src="../../../assets/images/accept.png" alt="">
+            </button>
+            <button class="requests-btn btn" (click)="deleteRequest(request)">
+                <img src="../../../assets/images/delete.png" alt="">
+            </button>
+        </li>
+    </ul>
+</div>

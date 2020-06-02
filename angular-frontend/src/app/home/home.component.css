@@ -1,28 +1,78 @@
-.bodycontent{
-    width: 100%;
-    height: 100vh;
+.container-fluid {
     padding: 0;
     margin: 0;
-    background: url("../../assets/images/bg1.jpg") center center;
+    width: 100%;
+    height: 100vh;
+    background: url("../../assets/images/home-bg-landscape.jpg") center center no-repeat;
     background-size: cover;
-}
-.col-md-6{
-    height: 100vh;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-}
-
-.row{
-    width: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    position: relative;
+  }
+  
+  .container-fluid::before {
+    content: '';
+    position: absolute;
     height: 100vh;
-    margin: 0;
-    padding: 0;
-}
-
-@media (max-width: 576px){
-    .home-bg-div{
-        display: none;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: #20242f;
+    opacity: .5;
+    z-index: 1;
+  }
+  
+  .box {
+    width: 30rem;
+    margin: 0 auto;
+    padding: 1rem;
+    text-align: center;
+    z-index: 5;
+  }
+  
+  .box h2 {
+    color: #fff;
+    font-size: 3rem;
+    text-align: center;
+    font-family: 'Racing Sans One', cursive;
+  }
+  
+  .btn {
+    max-width: 20rem;
+    width: 100%;
+    padding: .5rem;
+    text-align: center;
+    border: none;
+    margin: 1rem 0 .5rem 0;
+    border-radius: 20px;
+  }
+  
+  .login-btn {
+    color: #f54b64;
+    background-color: #fff;
+  }
+  
+  .signup-btn {
+    color: #fff;
+    background-image: -webkit-gradient(linear, left top, right bottom, from(#f54b64), color-stop(#f75b61), color-stop(#f76960), color-stop(#f77660), to(#f78361));
+    background-image: linear-gradient(to right bottom, #f54b64, #f75b61, #f76960, #f77660, #f78361);
+  }
+  
+  p {
+    margin: 2rem 0;
+    color: #fff;
+    /* font-size: .9rem; */
+  }
+  
+  @media screen and (max-width: 576px) {
+    .container-fluid {
+      background: url("../../assets/images/home-bg-portrait.jpg") center center no-repeat;
     }
-}
+  }

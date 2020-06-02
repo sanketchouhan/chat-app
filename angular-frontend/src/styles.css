@@ -1,22 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
+/* @import url('https://fonts.googleapis.com/css?family=Noto+Sans&display=swap'); */
 
-@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+/* font-family: 'Racing Sans One', cursive; */
 
-*{
+/* @import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&family=Roboto:wght@400;700&display=swap'); */
+
+* {
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
-}
-
-
-body{
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+  
+  body {
+    /* font-family: 'Noto Sans', sans-serif; */
+    font-family: 'Roboto', sans-serif;
     background-color: #20242f;
-    font-family: 'Source Sans Pro', sans-serif;
+    /* background-color: #4E586E; */
     width: 100%;
     height: 100vh;
-}
+  }
 
-.mat-dialog-container {
-    padding: 0 !important;
-    margin: 0 !important;
-}
+
+html, body { height: 100%; }

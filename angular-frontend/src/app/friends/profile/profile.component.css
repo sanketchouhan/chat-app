@@ -1,0 +1,118 @@
+/* .mat-dialog-container {
+    padding: 0;
+    margin: 0;
+} */
+
+/* ::ng-deep .mat-dialog-container {
+    padding: 0 !important;
+    margin: 0 !important;
+    background-color: #20242f !important;
+} */
+
+.profilecontent{
+    margin: 0;
+    padding: 3rem 2rem;
+    width: 20rem;
+    height: 30rem;
+    background-color: #20242f !important;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    position: relative;
+    transform: scale(0);
+    animation: showDialog .3s forwards;
+}
+.profilecontent .back-btn{
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    height: 1.2rem;
+    width: 1.2rem;
+}
+.profilecontent .back-btn:hover{
+    cursor: pointer;
+}
+.profilecontent h3{
+    padding: 1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+}
+.imguploader{
+    padding: 1rem;
+    /* height: 10rem; */
+}
+.imguploader:hover{
+    cursor: pointer;
+}
+.profilecontent img{
+    height: 8rem;
+    width: 8rem;
+    border-radius: 50%;
+    margin-bottom: .5rem;
+}
+.profilecontent .btn{
+    /* width: 100%; */
+    padding: .3rem 3rem;
+    font-size: .9rem;
+    text-align: center;
+    border: none;
+    margin: .5rem 0;
+    border-radius: 20px;
+    color: #fff;
+    background-image: linear-gradient(to right bottom, #f54b64, #f75b61, #f76960, #f77660, #f78361);
+
+}
+.profilecontent .btn:focus{
+    outline: none;
+}
+.details{
+    padding-top: 1rem;
+}
+.details .content{
+    /* display: flex;
+    justify-content: space-between; */
+    padding: .5rem 0;
+}
+.details .content h4,.details .content h5{
+    font-size: 1rem;
+    font-weight: 100;
+}
+.details .content h4{
+    color: rgba(255, 255, 255, .3);
+}
+/* .profilecontent h5{
+    padding: 1rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+} */
+
+
+@keyframes showDialog{
+    0%{
+        transform: scale(0);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
+
+
+.img-cropper{
+    /* width: 14rem; */
+    padding: 1px;
+    height: 100%;
+    max-height: 10rem;
+}
+
+.show-uploading{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, .7);
+    z-index: 999;
+}

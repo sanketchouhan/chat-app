@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, Route } from '@angular/router';
-import * as io from 'socket.io-client';
-import * as $ from 'jquery';
-import { UserService } from '../services/user.service';
-import { user } from '../models/user'
-import { ChatService } from '../services/chat.service';
+import { ChatService } from '../service/chat.service';
+import { UserService } from '../service/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,29 +10,20 @@ import { ChatService } from '../services/chat.service';
 })
 export class LoginComponent implements OnInit {
 
-  // socket: any;
-  constructor(private _route: Router, private _userService: UserService, private _chatService: ChatService) {
-    // this.socket = io('http://localhost:3000');
-
-    // this.socket.on('connect', function () {
-    //   console.log("connection made");
-    // });
-
-    // this.socket.on('newmsg', (data) => {
-    //   console.log(data);
-    // });
-  }
+  constructor(private _route: Router, private _userService: UserService, private _chatService: ChatService) { }
 
   ngOnInit() {
   }
+
   status: string;
 
   user = {
-    username: "",
+    email: "",
     password: ""
   };
 
 
+  //login user
   login() {
     this._chatService.overlay.emit(true);
     this._userService.loginUser(this.user).subscribe(
@@ -44,21 +32,16 @@ export class LoginComponent implements OnInit {
         this._chatService.overlay.emit(false);
         if (data.username) {
           this._userService.setUser(data);
-          this._chatService.setChatUser(data.friends[0]);
-          localStorage.setItem("LoggedInUser", JSON.stringify(data));
-          this._route.navigate(["contacts"]);
+          this._route.navigate(["friends"]);
         } else {
-          this.status=data.status;
+          this.status = "Something went wrong! Please try again";
         }
       },
       err => {
+        this.status = err.error.status;
         this._chatService.overlay.emit(false);
-        // console.log(err);
       }
     )
   }
 
-  routeTo() {
-    this._route.navigate(["home/register"]);
-  }
 }

@@ -1,0 +1,21 @@
+<img src="../../../assets/images/back.png" alt="" class="back-btn" [routerLink]="'/register'">
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-sm-6">
+            <h1>Confirm OTP</h1>
+        </div>
+        <div class="col-sm-6">
+            <div class="box">
+                <h2>Confirm OTP</h2>
+                <p>{{errorMessage}}</p>
+                <div class="email-input">
+                    <input type="text" name="otp" [(ngModel)]="otp" placeholder="OTP" id="otp"
+                        autocomplete="off" maxlength="6" required>
+                    <p class="timer">{{seconds}} s</p>
+                    <button type="submit" (click)="confirmOtp()" class="btn">Send</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

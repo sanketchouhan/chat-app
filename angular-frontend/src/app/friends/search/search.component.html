@@ -1,0 +1,19 @@
+<div class="searchContent">
+    <div class="input-div">
+        <input type="text" name="search" [(ngModel)]="searchText" id="search" placeholder="Search"
+            (keyup)="search($event)">
+    </div>
+
+    <div class="searchList">
+        <ul class="search-collection">
+            <li class="search-item" *ngFor="let item of searchItems">
+                <div class="img" (click)="showProfile(item)">
+                    <img src={{item.profilePicUrl}} class="img-fluid">
+                </div>
+                <p class="searchName">{{item.username}}</p>
+                <div class="m-auto"></div>
+                <button class="add-friend-btn btn" (click)="addFriend(item)">Add Friend</button>
+            </li>
+        </ul>
+    </div>
+</div>

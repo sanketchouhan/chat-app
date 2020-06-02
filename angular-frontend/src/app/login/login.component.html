@@ -1,14 +1,21 @@
-<div class="box">
-
-<p *ngIf="status">{{status}}</p>
-    <input type="text" name="username" [(ngModel)]="user.username" placeholder="Username" id="username" autocomplete="off" required>
-      <input type="password" name="password" [(ngModel)]="user.password" placeholder="Password" id="password" required>
-    <button type="submit" (click)="login()" class="btn">Login <i class="fas fa-sign-in-alt"></i></button>
-    <!-- <a class="btn waves-effect waves-light" (click)="login()" >Login
-        <i class="material-icons">exit_to_app</i>
-    </a> -->
-  <!-- </div> -->
-  <!-- </form> -->
-  
-  <p><a (click)="routeTo()">New user? Create Account</a></p>
+<img src="../../assets/images/back.png" alt="" class="back-btn" [routerLink]="['']">
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Welcome Back!</h1>
+    </div>
+    <div class="col-sm-6">
+      <div class="box">
+        <h2>Welcome Back!</h2>
+        <p *ngIf="status">{{status}}</p>
+        <input type="text" name="email" [(ngModel)]="user.email" placeholder="Email" id="email"
+          autocomplete="off" required>
+        <input type="password" name="password" [(ngModel)]="user.password" placeholder="Password" id="password"
+          required>
+        <p [routerLink]="['/login/forgotpassword']" class="forgot-psw">Forgot password</p>
+        <button type="submit" (click)="login()" class="btn">Login</button>
+        <p [routerLink]="['/register']">New user? Create Account</p>
+      </div>
+    </div>
+  </div>
 </div>

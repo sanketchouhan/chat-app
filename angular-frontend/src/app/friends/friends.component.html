@@ -1,0 +1,46 @@
+<div class="container-fluid">
+    <div class="profile" *ngIf="showProfileDialog">
+        <app-profile></app-profile>
+    </div>
+    <div class="row">
+        <div class="col col-12 col-sm-5 col-md-5 col-lg-4">
+            <div class="navtabs">
+                <div class="tabs" [ngClass]="{isActive:tabs[0]}" (click)="tabs[0]=true;tabs[1]=false;tabs[2]=false"
+                    [routerLink]="['/friends']">
+                    <img src="../../assets/images/friends-logo.png" alt="" class="img-logo">
+                    <p>Friends</p>
+                </div>
+                <div class="tabs" [ngClass]="{isActive:tabs[1]}" (click)="tabs[0]=false;tabs[1]=true;tabs[2]=false"
+                    [routerLink]="['/friends/search']">
+                    <img src="../../assets/images/search-logo.png" alt="" class="img-logo">
+                    <p>Search</p>
+                </div>
+                <div class="tabs" [ngClass]="{isActive:tabs[2]}" (click)="tabs[0]=false;tabs[1]=false;tabs[2]=true"
+                    [routerLink]="['/friends/notification']">
+                    <img src="../../assets/images/notification-logo.png" alt="" class="img-logo">
+                    <p>Notification</p>
+                </div>
+
+                <div class="menu" (click)="showMenu=!showMenu">
+                    <!-- <div class="menu" (click)="openProfileDailog()"> -->
+                    <img src="../../assets/images/dots.png" alt="" class="dropdown-btn">
+                    <div class="menu-list" *ngIf="showMenu">
+                        <ul>
+                            <li (click)="openProfileDailog()">Profile</li>
+                            <li (click)="logOut()">Logout</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="show-area">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+
+        <div class="col contact-chatroom" *ngIf="showChatroom">
+            <app-chatroom></app-chatroom>
+        </div>
+    </div>
+</div>

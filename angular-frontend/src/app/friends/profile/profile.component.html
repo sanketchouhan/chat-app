@@ -1,0 +1,39 @@
+<div class="profilecontent">
+
+    <div class="show-uploading" *ngIf="showUploading">
+        <div class="spinner-border text-light" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <img src="../../../assets/images/cross.png" alt="" class="back-btn" (click)="close()">
+    <h3 *ngIf="globalUser">Edit Profile</h3>
+    <h3 *ngIf="!globalUser">Profile</h3>
+    <div class="imguploader">
+        <!-- <img [src]="imgSrc">
+        <input type="file" hidden #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile"
+            *ngIf="globalUser"> -->
+
+
+
+        <img [src]="croppedImage" (click)="fileuploder.click()">
+        <input type="file" hidden #fileuploder (change)="fileChangeEvent($event)" />
+        <image-cropper [imageChangedEvent]="imageChangedEvent" [resizeToWidth]="200"
+            (imageCropped)="imageCropped($event)" class="img-cropper" *ngIf="imgSelected"></image-cropper>
+
+
+        <button type="submit" class="btn" (click)="uploadfile()" *ngIf="globalUser && imgSelected">Upload</button>
+
+    </div>
+
+    <div class="details" *ngIf="!imgSelected">
+        <div class="content">
+            <h4>User Name</h4>
+            <h5>{{user.username}}</h5>
+        </div>
+        <div class="content">
+            <h4>Email</h4>
+            <h5>{{user.email}}</h5>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,98 @@
+.contactList{
+    height: 100%;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+.contact-collection{
+    padding-top: 0;
+    margin: 0;
+    border: none;
+}
+.contact-item{
+    padding: .7rem 1rem;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.5);
+}
+.contact-item:hover{
+    cursor: pointer;
+    background-color: #242a38;
+}
+.contact-collection .img{
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+    position: relative;
+}
+.contact-collection img{
+    width: 2.8rem;
+    height: 2.8rem;
+    border-radius: 50%;
+}
+.contact-collection .img::before{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 9;
+}
+/* .click-tab{
+    display: flex;
+    align-items: center;
+} */
+.contactsName{
+    font-size: 1.1rem;
+    margin: 0;
+    color: white;
+}
+.content{
+    padding-left: 1rem;
+}
+/* .last-message{
+    font-size: .9rem;
+    margin: 0;
+    color: rgb(158, 165, 180);
+} */
+.new{
+    /* height: 1.2rem;
+    width: 1.2rem;
+    background-image: linear-gradient(to right bottom, #f54b64, #f75b61, #f76960, #f77660, #f78361);
+    text-align: center;
+    line-height: 1rem;
+    border-radius: 5px; */
+}
+.new img{
+    height: 1.2rem;
+    width: 1.2rem;
+}
+/* .animate-tab-1{
+    transform: translateX(-100%);
+    animation: tab-1 .5s forwards;
+}
+@keyframes tab-1 {
+    0%{
+        transform: translateX(-100%);
+    }
+    100%{
+        transform: translateX(0);
+    }
+} */
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0); 
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.8); 
+}
+

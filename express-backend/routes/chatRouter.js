@@ -5,16 +5,7 @@ var chatRouter = express.Router();
 
 chatRouter.use(bodyParser.json());
 
-// chatRouter.route("/")
-//     .get((req, res, next) => {
-//         res.statusCode = 200;
-//         res.json({ 'error': "chats/get" });
-//     })
-//     .post((req, res, next) => {
-//         res.statusCode = 200;
-//         res.json({ 'error': "chats/post" });
-//     })
-
+// get/update user chats
 chatRouter.route('/:chatId')
     .get((req, res, next) => {
         Chats.findOne({ chatId: req.params.chatId })
@@ -36,10 +27,9 @@ chatRouter.route('/:chatId')
                             res.statusCode = 200;
                             res.setHeader('Content-Type', 'application/json');
                             res.json(chat);
-                            // res.end();
                         }, (err) => {
-                            res.statusCode = 200;
-                            res.json({ 'error': "Error in saving chat"+err });
+                            res.statusCode = 400;
+                            res.json({ 'error': "Error in saving chat" });
                         });
                 }
                 else {
@@ -52,7 +42,7 @@ chatRouter.route('/:chatId')
                             res.setHeader('Content-Type', 'application/json');
                             res.json(chat);
                         }, (err) => {
-                            res.statusCode = 200;
+                            res.statusCode = 400;
                             res.setHeader('Content-Type', 'application/json');
                             res.json({ 'error': "Error in saving new chat" });
                         });
