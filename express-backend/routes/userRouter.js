@@ -79,7 +79,7 @@ userRouter.post('/register', function (req, res, next) {
 
                 transporter.sendMail(mailOptions, function (error, info) {
                     if (error) {
-                        console.log("Error 123 " + error);
+                        // console.log("Error 123 " + error);
                         res.statusCode = 400;
                         res.setHeader('Content-Type', 'application/json');
                         res.json({ "status": "Something went wrong! Please try again." });
@@ -97,37 +97,49 @@ userRouter.post('/register', function (req, res, next) {
 
 // confirm otp and register route
 userRouter.post('/confirmRegisterOtp', function (req, res, next) {
-    if (userOtp.length > 0) {
-        let flag = false;
-        userOtp.forEach(i => {
-            if (i.otp == req.body.otp && i.email == req.body.email) {
-                flag = true;
-                var newuser = new User();
-                newuser.username = req.body.username;
-                newuser.email = req.body.email;
-                newuser.password = bcrypt.hashSync(req.body.password, 10);
-                newuser.profilePicUrl = req.body.profilePicUrl;
-                newuser.save()
-                    .then((user) => {
-                        i.otp = "";
-                        i.email = "";
-                        res.statusCode = 200;
+    User.findOne({ email: req.body.email })
+        .then((user) => {
+            if (user != null) {
+                res.statusCode = 200;
+                res.setHeader('Content-Type', 'application/json');
+                res.json(user);
+            } else {
+                if (userOtp.length > 0) {
+                    let flag = false;
+                    userOtp.forEach(i => {
+                        if (i.otp == req.body.otp && i.email == req.body.email) {
+                            flag = true;
+                            var newuser = new User();
+                            newuser.username = req.body.username;
+                            newuser.email = req.body.email;
+                            newuser.password = bcrypt.hashSync(req.body.password, 10);
+                            newuser.profilePicUrl = req.body.profilePicUrl;
+                            newuser.save()
+                                .then((user) => {
+                                    i.otp = "";
+                                    i.email = "";
+                                    res.statusCode = 200;
+                                    res.setHeader('Content-Type', 'application/json');
+                                    res.json(user);
+                                }, (err) => { console.log(err); next(err) });
+                        }
+                    });
+                    if (!flag) {
+                        res.statusCode = 400;
                         res.setHeader('Content-Type', 'application/json');
-                        res.json(user);
-                    }, (err) => { console.log(err); next(err) });
+                        res.json({ 'res': 'Something went wrong! Please try again.' });
+                    }
+                } else {
+                    res.statusCode = 400;
+                    res.setHeader('Content-Type', 'application/json');
+                    res.json({ 'res': 'Something went wrong! Please try again later.' });
+                }
             }
-        });
-        if (!flag) {
-            res.statusCode = 400;
-            res.setHeader('Content-Type', 'application/json');
-            res.json({ 'res': 'Something went wrong! Please try again.' });
-        }
-    } else {
-        res.statusCode = 400;
-        res.setHeader('Content-Type', 'application/json');
-        res.json({ 'res': 'Something went wrong! Please try again.' });
-    }
+        }, (err) => next(err))
+        .catch((err) => next(err));
 });
+
+// });
 
 // forgot password otp
 userRouter.post('/sendPasswordResetLink', function (req, res, next) {

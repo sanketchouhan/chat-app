@@ -10,17 +10,11 @@
     <h3 *ngIf="globalUser">Edit Profile</h3>
     <h3 *ngIf="!globalUser">Profile</h3>
     <div class="imguploader">
-        <!-- <img [src]="imgSrc">
-        <input type="file" hidden #fileuploder (change)="upload($event)" accept=".png,.jpg" name="profile" id="profile"
-            *ngIf="globalUser"> -->
-
-
 
         <img [src]="croppedImage" (click)="fileuploder.click()">
         <input type="file" hidden #fileuploder (change)="fileChangeEvent($event)" />
         <image-cropper [imageChangedEvent]="imageChangedEvent" [resizeToWidth]="200"
             (imageCropped)="imageCropped($event)" class="img-cropper" *ngIf="imgSelected"></image-cropper>
-
 
         <button type="submit" class="btn" (click)="uploadfile()" *ngIf="globalUser && imgSelected">Upload</button>
 
