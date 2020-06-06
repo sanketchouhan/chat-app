@@ -23,7 +23,7 @@ $(document).ready(function () {
             TweenMax.to(".features-2 .image-logo", .5, { transform: "translateY(0)", opacity: 1 });
             TweenMax.to(".features-2 h1", .5, { delay: .5, transform: "translateY(0)", opacity: 1 });
             TweenMax.to(".features-2 p", .5, { delay: 1, transform: "translateY(0)", opacity: 1 });
-            TweenMax.to(".features-2 .col-sm-6:nth-child(2) img", .5, { delay: 1.5, transform: "rotate(-10deg) skew(10deg, 10deg) scale(1)", opacity: 1 });
+            TweenMax.to(".features-2 .col-sm-6:nth-child(2) img", .5, { delay: 1.5, transform: "scale(1)", opacity: 1 });
         },
         offset: '60%'
     })
